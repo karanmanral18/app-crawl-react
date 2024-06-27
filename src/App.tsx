@@ -3,7 +3,7 @@ import './App.css'
 function App() {
   return (
     <>
-      Home Page
+      <div className="btn btn-primary">Submit</div>
     </>
   )
 }
