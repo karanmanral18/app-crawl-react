@@ -26,7 +26,7 @@ const Router = () => {
             element={<CreateClient />}
           />
           <Route
-            path='/client/:slug'
+            path='/client/:id'
             element={<EditClient />}
           />
         </Route>
