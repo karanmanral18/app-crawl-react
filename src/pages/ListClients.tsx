@@ -1,6 +1,10 @@
 function Index() {
   return (
-    <div>Index</div>
+    <section className="mid-section d-flex flex-column">
+        <div className="mid-info container-fluid py-4">
+            Listing
+        </div>
+    </section>
   )
 }
 

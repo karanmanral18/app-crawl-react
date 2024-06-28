@@ -3,28 +3,38 @@ import Layout from '@/components/common/Layout';
 import ListClients from '@/pages/ListClients';
 import CreateClient from '@/pages/CreateClient';
 import EditClient from '@/pages/EditClient';
+import NotFound from './pages/NotFound';
+import { useQueryErrorResetBoundary } from '@tanstack/react-query';
+import ErrorFallback from '@/components/ErrorFallback';
+import { ErrorBoundary } from 'react-error-boundary';
+import LoadingFallback from '@/components/LoadingFallback';
+import { Suspense } from 'react';
 
 const Router = () => {
+
   return (
-    <Routes>
-      <Route element={<Layout />}>
+    <Suspense fallback={<LoadingFallback />}>
+      <Routes>
+        <Route element={<Layout />}>
           <Route
             path='/'
-            element={<ListClients/>}
+            element={<ListClients />
+            }
           />
           <Route
             path='/create'
-            element={<CreateClient/>}
+            element={<CreateClient />}
           />
           <Route
             path='/client/:slug'
-            element={<EditClient/>}
+            element={<EditClient />}
           />
-      </Route>
+        </Route>
 
-      {/* 404 Page Not Found */}
-      <Route path="*" element={<div>404 Page Not Found</div>} />
-    </Routes>
+        {/* 404 Page Not Found */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 
