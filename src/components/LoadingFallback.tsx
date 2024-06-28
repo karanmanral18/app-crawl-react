@@ -1,7 +1,7 @@
 const LoadingFallback = () => {
   return (
     <div>
-      <h1 className="logo-font">Loading...</h1>
+      <h1>Loading...</h1>
     </div>
   );
 };
