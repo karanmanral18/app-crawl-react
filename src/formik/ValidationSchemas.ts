@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 /**
- * Signup Validations
+ *  Client Validations
  */
 export const clientFormValidationSchema = Yup.object({
   email: Yup.string()

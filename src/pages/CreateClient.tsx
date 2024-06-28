@@ -37,6 +37,10 @@ const Create: React.FC = () => {
         },
     });
 
+    function handleBack() {
+        navigate('/');
+    }
+
     return (
         <FormikProvider value={formik}>
             <section className='mid-section d-flex flex-column'>
@@ -115,7 +119,13 @@ const Create: React.FC = () => {
                             </div>
                             <div className='mb-3 mt-4'>
                                 <button
-                                    className='btn btn-primary'
+                                    onClick={handleBack}
+                                    className='btn btn-primary me-3'
+                                >
+                                    Back
+                                </button>
+                                <button
+                                    className='btn btn-success'
                                     type="submit"
                                 >
                                     Create Client
