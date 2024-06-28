@@ -52,6 +52,23 @@ export const getClients = async (options: getClientsParam) => {
   return result.data;
 };
 
+export const getClientsFromElasticSearch = async (options: getClientsParam) => {
+  const { pageNumber, perPage, id = null, email, cin, name } = options;
+  const result = await apiClient({
+    method: "get",
+    url: `/clients/elastic/search`,
+    params: {
+      page: pageNumber,
+      perPage: perPage,
+      id: id,
+      email: email,
+      cin: cin,
+      name: name,
+    },
+  });
+  return result.data;
+};
+
 export const deleteClient = async (id: number) => {
   return await apiClient({
     method: "delete",

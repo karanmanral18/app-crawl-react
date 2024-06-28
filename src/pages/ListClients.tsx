@@ -1,6 +1,6 @@
 import PaginationComponent from "@/components/Pagination";
 import { ClientInterface } from "@/interfaces/ClientInterfaces";
-import { deleteClient, getClients } from "@/repositories/client/clientRepository";
+import { deleteClient, getClients, getClientsFromElasticSearch } from "@/repositories/client/clientRepository";
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -36,12 +36,13 @@ const ListClients: React.FC = () => {
   };
 
   async function handlePageChanged(pageNumber: number) {
-    await fetchClients(pageNumber);
+    await fetchClientsFromElasticSearch(pageNumber);
   }
 
-  async function fetchClients(pageNumber: number = 1) {
+  // function for fetching data directly from mysql instead of elastic search
+  async function fetchClientsFromDatabase(pageNumber: number = 1) {
     try {
-      const clientData = await getClients({
+      const clientData = await getClientsFromElasticSearch({
         pageNumber: pageNumber,
         perPage: pagination.perPage,
         email: filters.email,
@@ -54,6 +55,28 @@ const ListClients: React.FC = () => {
         ...prevState,
         currentPage: clientData.clients.page,
         totalRows: clientData.clients.totalItems
+      }))
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast.error('Something went wrong! Please try again');
+    }
+  }
+
+  async function fetchClientsFromElasticSearch(pageNumber: number = 1) {
+    try {
+      const clientData = await getClientsFromElasticSearch({
+        pageNumber: pageNumber,
+        perPage: pagination.perPage,
+        email: filters.email,
+        name: filters.name,
+        cin: filters.cin,
+        id: filters.id
+      });
+      setClients(clientData.hits.hits.map(userData => userData._source));
+      setPagination((prevState) => ({
+        ...prevState,
+        currentPage: pageNumber,
+        totalRows: clientData.hits.total.value
       }))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -80,13 +103,13 @@ const ListClients: React.FC = () => {
   }
 
   useEffect(() => {
-    fetchClients();
+    fetchClientsFromElasticSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     if (shouldFetchClients) {
-      fetchClients().then(() => setShouldFetchClients(false));
+      fetchClientsFromElasticSearch().then(() => setShouldFetchClients(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldFetchClients])
@@ -152,7 +175,7 @@ const ListClients: React.FC = () => {
               <input type="text" name="cin" className="form-control" placeholder="Search by CIN" value={filters.cin || ''} onChange={handleChange} />
             </div>
             <div className="col-md-6 col-lg-4 d-flex align-items-end mb-3">
-              <button className="btn btn-success" onClick={() => fetchClients()}>Search</button>
+              <button className="btn btn-success" onClick={() => fetchClientsFromElasticSearch()}>Search</button>
               <button type="reset" className="btn btn-secondary ms-2" onClick={resetFilters}>Reset</button>
             </div>
           </div>
