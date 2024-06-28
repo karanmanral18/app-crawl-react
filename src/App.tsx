@@ -1,10 +1,12 @@
+import { BrowserRouter } from 'react-router-dom'
 import './App.css'
+import Router from './Router'
 
 function App() {
   return (
-    <>
-      <div className="btn btn-primary">Submit</div>
-    </>
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   )
 }
 
