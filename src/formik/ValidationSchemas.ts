@@ -10,7 +10,6 @@ export const clientFormValidationSchema = Yup.object({
   name: Yup.string().required("This field is required."),
   cin: Yup.string()
     .required("This field is required.")
-    .matches(/^\d+$/, "Field must be numeric.")
     .min(21, "Field must be exactly 21 digits")
     .max(21, "Field must be exactly 21 digits"),
   pin: Yup.string()

@@ -52,7 +52,6 @@ const EditClient: React.FC = () => {
       try {
         await updateClient(client!.id as number, values);
         toast.success('Client updated successfully!')
-        navigate('/');
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         if (error.isAxiosError) {
